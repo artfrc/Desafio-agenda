@@ -16,7 +16,7 @@ def view_options():
    
 def view_contacts(contacts):
    if not contacts:
-         print('No contacts')
+      print('No contacts')
    else:
       print('Contacts:')
       for index, contact in enumerate(contacts):
@@ -26,12 +26,69 @@ def view_contacts(contacts):
          print(f'Favorite: {contact.favorite}')
          print('-------------------')
 
+def edit_contact(contacts):
+   if not contacts:
+      print('No contacts to edit.')
+      return
+   view_contacts(contacts)
+   index = int(input('Enter the number of the contact to edit: ')) - 1
+   if 0 <= index < len(contacts):
+      name = input('Enter new name (leave blank to keep current): ')
+      phone_number = input('Enter new phone number (leave blank to keep current): ')
+      email = input('Enter new email (leave blank to keep current): ')
+      if name:
+         contacts[index].name = name
+      if phone_number:
+         contacts[index].phone_number = phone_number
+      if email:
+         contacts[index].email = email
+      print('Contact updated!')
+   else:
+      print('Invalid contact number.')
+
+def mark_favorite(contacts):
+   if not contacts:
+      print('No contacts to mark as favorite.')
+      return
+   view_contacts(contacts)
+   index = int(input('Enter the number of the contact to mark as favorite: ')) - 1
+   if 0 <= index < len(contacts):
+      contacts[index].favorite = True
+      print(f'{contacts[index].name} marked as favorite!')
+   else:
+      print('Invalid contact number.')
+
+def view_favorites(contacts):
+   favorites = [contact for contact in contacts if contact.favorite]
+   if not favorites:
+      print('No favorite contacts.')
+   else:
+      print('Favorite Contacts:')
+      for contact in favorites:
+         print(f'Name: {contact.name}')
+         print(f'Phone number: {contact.phone_number}')
+         print(f'Email: {contact.email}')
+         print('-------------------')
+
+def delete_contact(contacts):
+   if not contacts:
+      print('No contacts to delete.')
+      return
+   view_contacts(contacts)
+   index = int(input('Enter the number of the contact to delete: ')) - 1
+   if 0 <= index < len(contacts):
+      deleted_contact = contacts.pop(index)
+      print(f'{deleted_contact.name} deleted.')
+   else:
+      print('Invalid contact number.')
+
+# Main loop
 contacts = []
 option = -1
 while option != 7:
    view_options()
    choice = int(input('Enter an option: '))
-   
+   option = choice
    match choice:
       case 1:
          view_contacts(contacts)
@@ -45,19 +102,19 @@ while option != 7:
          print('Contact added!')
       
       case 3:
-         print('Edit contact')   
+         edit_contact(contacts)
 
       case 4:
-         print('Mark contact as a favorite')
+         mark_favorite(contacts)
       
       case 5:
-         print('View favorite contacts')
+         view_favorites(contacts)
       
       case 6:
-         print('Delete contact')
+         delete_contact(contacts)
       
       case 7:
          print('Goodbye!')
-      
+
       case _:
          print('Invalid option')
